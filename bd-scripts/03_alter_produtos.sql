@@ -1,4 +1,4 @@
-USE agenda;
+USE sis_cad;
 
 ALTER TABLE produtos 
 ADD COLUMN imagem VARCHAR(255) DEFAULT NULL AFTER estoque;

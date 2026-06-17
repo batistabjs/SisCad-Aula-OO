@@ -1,4 +1,4 @@
-USE agenda;
+USE sis_cad;
 
 -- Sementes para a tabela de contatos
 INSERT INTO contatos (nome, email, telefone) VALUES

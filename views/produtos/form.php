@@ -4,7 +4,7 @@
     <p style="color: red;"><?php echo htmlspecialchars($erro); ?></p>
 <?php endif; ?>
 
-<form method="POST" action="index.php?page=/produtos/salvar" enctype="multipart/form-data">
+<form method="POST" action="/produtos/salvar" enctype="multipart/form-data">
     <?php if ($produto): ?>
         <input type="hidden" name="id" value="<?php echo $produto->getId(); ?>">
     <?php endif; ?>
@@ -29,5 +29,5 @@
         <input type="file" name="imagem" id="imagem" accept="image/*">
     </div>
     <button type="submit">Salvar Produto</button>
-    <a href="index.php?page=/produtos/lista">Voltar</a>
+    <a href="/produtos/lista">Voltar</a>
 </form>

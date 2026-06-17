@@ -4,7 +4,7 @@
     <p style="color: red;"><?php echo htmlspecialchars($erro); ?></p>
 <?php endif; ?>
 
-<form method="POST" action="index.php?page=/clientes/salvar">
+<form method="POST" action="/clientes/salvar">
     <?php if ($cliente): ?>
         <input type="hidden" name="id" value="<?php echo $cliente->getId(); ?>">
     <?php endif; ?>
@@ -29,5 +29,5 @@
         <input type="text" name="endereco" id="endereco" value="<?php echo htmlspecialchars($cliente ? $cliente->getEndereco() : ($_POST['endereco'] ?? '')); ?>">
     </div>
     <button type="submit">Salvar Cliente</button>
-    <a href="index.php?page=/clientes/lista">Voltar</a>
+    <a href="/clientes/lista">Voltar</a>
 </form>

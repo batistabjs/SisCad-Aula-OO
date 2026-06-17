@@ -1,5 +1,5 @@
 <h2>Gerenciamento de Clientes</h2>
-<p><a href="index.php?page=/clientes/cadastro">Cadastrar Novo Cliente</a></p>
+<p><a href="/clientes/cadastro">Cadastrar Novo Cliente</a></p>
 
 <table>
     <thead>
@@ -15,8 +15,8 @@
                 <td><?php echo htmlspecialchars($cliente->getTelefone()); ?></td>
                 <td><?php echo htmlspecialchars($cliente->getEndereco()); ?></td>
                 <td>
-                    <a href="index.php?page=/clientes/cadastro&id=<?php echo $cliente->getId(); ?>">Editar</a> | 
-                    <a href="index.php?page=/clientes/excluir&id=<?php echo $cliente->getId(); ?>" onclick="return confirm('Excluir este cliente?')">Excluir</a>
+                    <a href="/clientes/cadastro?id=<?php echo $cliente->getId(); ?>">Editar</a> | 
+                    <a href="/clientes/excluir?id=<?php echo $cliente->getId(); ?>" onclick="return confirm('Excluir este cliente?')">Excluir</a>
                 </td>
             </tr>
         <?php endforeach; ?>

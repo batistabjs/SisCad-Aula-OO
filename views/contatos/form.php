@@ -4,7 +4,7 @@
     <p style="color: red;"><?php echo htmlspecialchars($erro); ?></p>
 <?php endif; ?>
 
-<form method="POST" action="index.php?page=/contatos/salvar">
+<form method="POST" action="/contatos/salvar">
     <?php if ($contato): ?>
         <input type="hidden" name="id" value="<?php echo $contato->getId(); ?>">
     <?php endif; ?>
@@ -21,5 +21,5 @@
         <input type="text" name="telefone" id="telefone" value="<?php echo htmlspecialchars($contato ? $contato->getTelefone() : ($_POST['telefone'] ?? '')); ?>">
     </div>
     <button type="submit">Salvar Contato</button>
-    <a href="index.php?page=/contatos/lista">Voltar</a>
+    <a href="/contatos/lista">Voltar</a>
 </form>

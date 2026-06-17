@@ -1,6 +1,6 @@
 # SisCad - Sistema de Cadastro
 
-## 🏗️ Arquitetura do Projeto
+## Arquitetura do Projeto
 
 O projeto foi refatorado para seguir uma arquitetura em camadas, separando responsabilidades de acesso a dados, lógica de negócio e apresentação.
 
@@ -11,12 +11,16 @@ O projeto foi refatorado para seguir uma arquitetura em camadas, separando respo
   - `Contato.php`, `Cliente.php`, `Produto.php`: Classes de Entidade com atributos privados e métodos Getters/Setters (**Encapsulamento**).
   - `ContatoDAO.php`, `ClienteDAO.php`, `ProdutoDAO.php`: Data Access Objects responsáveis pelas queries SQL e conversão de dados para objetos.
 - `views/`: Camada de apresentação (Templates).
-  - `cabecalho.php`: Template global.
+  - `cabecalho.php`: Template global com Bootstrap e menu de navegação.
+  - `rodape.php`: Template global de rodapé usado nas páginas montadas pelos controllers.
+  - `landing-page.php`: Página inicial pública de apresentação do sistema de controle de vendas.
+  - `dashboard/dashboard.php`: Resumo inicial do sistema após acessar a aplicação.
   - `contatos/`, `clientes/`, `produtos/`: Pastas com arquivos de listagem (`lista.php`) e formulários (`form.php`).
 - `uploads/`: Armazenamento de imagens de produtos.
-- `index.php`: Atua como o **Roteador Central** da aplicação.
+- `rotas.php`: Atua como o **Roteador Central** da aplicação. A rota `/` abre a landing page antes do acesso ao dashboard.
+- `controllers/`: Montagem dinâmica das páginas, incluindo `cabecalho.php`, o conteúdo específico e `rodape.php`.
 
-## 🚀 Como Executar
+## Como Executar
 
 1.  **Banco de Dados**:
     - Importe os arquivos em `bd-scripts/` no seu MySQL.
@@ -28,7 +32,9 @@ O projeto foi refatorado para seguir uma arquitetura em camadas, separando respo
       `php -S localhost:8000`
     - Acesse `http://localhost:8000` no navegador.
 
-## ✨ Recursos Implementados
+## Recursos Implementados
+- Landing page pública como homepage do sistema de controle de vendas.
+- Dashboard como tela inicial do sistema após acessar a aplicação.
 - CRUD completo para Contatos, Clientes e Produtos.
 - Busca e Paginação eficiente.
 - Upload de imagens com renomeação segura.

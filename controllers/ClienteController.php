@@ -13,6 +13,7 @@ class ClienteController {
         $clientes = $this->dao->findAll();
         include "views/cabecalho.php";
         include "views/clientes/lista.php";
+        include "views/rodape.php";
     }
 
     public function create() {
@@ -20,6 +21,7 @@ class ClienteController {
         $cliente = $id ? $this->dao->findById((int)$id) : null;
         include "views/cabecalho.php";
         include "views/clientes/form.php";
+        include "views/rodape.php";
     }
 
     public function store() {
@@ -30,16 +32,18 @@ class ClienteController {
             try {
                 $this->dao->save($cliente);
                 setFlash('success', 'Cliente salvo com sucesso!');
-                header('Location: index.php?page=/clientes/lista');
+                header('Location: /clientes/lista');
             } catch (Exception $e) {
                 $erro = $e->getMessage();
                 include "views/cabecalho.php";
                 include "views/clientes/form.php";
+                include "views/rodape.php";
             }
         } else {
             $erro = "Nome, CPF (14 caracteres) e e-mail são obrigatórios.";
             include "views/cabecalho.php";
             include "views/clientes/form.php";
+            include "views/rodape.php";
         }
     }
 
@@ -53,6 +57,6 @@ class ClienteController {
                 setFlash('error', $e->getMessage());
             }
         }
-        header('Location: index.php?page=/clientes/lista');
+        header('Location: /clientes/lista');
     }
 }

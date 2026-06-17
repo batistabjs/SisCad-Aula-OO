@@ -21,6 +21,7 @@ class ContatoController {
 
         include "views/cabecalho.php";
         include "views/contatos/lista.php";
+        include "views/rodape.php";
     }
 
     public function create() {
@@ -29,6 +30,7 @@ class ContatoController {
         
         include "views/cabecalho.php";
         include "views/contatos/form.php";
+        include "views/rodape.php";
     }
 
     public function store() {
@@ -39,16 +41,18 @@ class ContatoController {
             try {
                 $this->dao->save($contato);
                 setFlash('success', 'Contato salvo com sucesso!');
-                header('Location: index.php?page=/contatos/lista');
+                header('Location: /contatos/lista');
             } catch (Exception $e) {
                 $erro = $e->getMessage();
                 include "views/cabecalho.php";
                 include "views/contatos/form.php";
+                include "views/rodape.php";
             }
         } else {
             $erro = "Nome e e-mail são obrigatórios.";
             include "views/cabecalho.php";
             include "views/contatos/form.php";
+            include "views/rodape.php";
         }
     }
 
@@ -62,6 +66,6 @@ class ContatoController {
                 setFlash('error', $e->getMessage());
             }
         }
-        header('Location: index.php?page=/contatos/lista');
+        header('Location: /contatos/lista');
     }
 }

@@ -21,6 +21,13 @@ function setFlash($type, $message) {
 // Inicialização do Roteador
 $router = new Router();
 
+// Definição das Rotas - Landing Page
+$router->get('/', 'LandingPageController@index');
+$router->get('/landing', 'LandingPageController@index');
+
+// Definição das Rotas - Dashboard
+$router->get('/dashboard', 'DashboardController@index');
+
 // Definição das Rotas - Módulo de Contatos
 $router->get('/contatos/lista', 'ContatoController@index');
 $router->get('/contatos/cadastro', 'ContatoController@create');
@@ -39,8 +46,19 @@ $router->get('/produtos/cadastro', 'ProdutoController@create');
 $router->post('/produtos/salvar', 'ProdutoController@store');
 $router->get('/produtos/excluir', 'ProdutoController@delete');
 
-// Captura a página solicitada via GET 'page' para simular rotas amigáveis
-$uri = $_GET['page'] ?? '/contatos/lista';
+// Captura a página solicitada
+// 1. Tenta pegar do parâmetro 'page' (usado pelo .htaccess do Apache)
+// 2. Se não houver, usa a URI da requisição (para php -S ou outros servidores)
+$uri = $_GET['page'] ?? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Remove 'rotas.php' da URI se estiver presente para evitar erro de rota
+$uri = str_replace('/rotas.php', '', $uri);
+
+// Define rota padrão se a URI for raiz, vazia ou apenas '/'
+if ($uri === '/' || empty($uri)) {
+    $uri = '/landing';
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {

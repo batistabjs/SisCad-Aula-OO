@@ -24,10 +24,16 @@ class Router {
     public function dispatch($uri, $method) {
         // Remove query string da URI
         $path = parse_url($uri, PHP_URL_PATH);
-        
-        // Normaliza o caminho (remove a barra final se existir)
-        $path = rtrim($path, '/');
-        if ($path === '') $path = '/';
+
+        // Garante que o caminho comece com '/'
+        if (empty($path) || $path[0] !== '/') {
+            $path = '/' . $path;
+        }
+
+        // Normaliza o caminho (remove a barra final se existir, a menos que seja a raiz '/')
+        if ($path !== '/') {
+            $path = rtrim($path, '/');
+        }
 
         // Verifica se a rota existe para o método solicitado
         if (isset($this->routes[$method][$path])) {
@@ -60,6 +66,6 @@ class Router {
         http_response_code(404);
         echo "<h1>404 - Página não encontrada</h1>";
         echo "<p>A rota <strong>{$path}</strong> não existe neste sistema.</p>";
-        echo '<a href="index.php">Voltar para Início</a>';
+        echo '<a href="/">Voltar para Início</a>';
     }
 }

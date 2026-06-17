@@ -13,6 +13,7 @@ class ProdutoController {
         $produtos = $this->dao->findAll();
         include "views/cabecalho.php";
         include "views/produtos/lista.php";
+        include "views/rodape.php";
     }
 
     public function create() {
@@ -20,6 +21,7 @@ class ProdutoController {
         $produto = $id ? $this->dao->findById((int)$id) : null;
         include "views/cabecalho.php";
         include "views/produtos/form.php";
+        include "views/rodape.php";
     }
 
     public function store() {
@@ -31,6 +33,7 @@ class ProdutoController {
             $erro = "Preço e estoque inválidos.";
             include "views/cabecalho.php";
             include "views/produtos/form.php";
+            include "views/rodape.php";
             return;
         }
 
@@ -44,6 +47,7 @@ class ProdutoController {
                 $erro = "Extensão de imagem não permitida.";
                 include "views/cabecalho.php";
                 include "views/produtos/form.php";
+                include "views/rodape.php";
                 return;
             }
         }
@@ -53,11 +57,12 @@ class ProdutoController {
         try {
             $this->dao->save($produto);
             setFlash('success', 'Produto salvo com sucesso!');
-            header('Location: index.php?page=/produtos/lista');
+            header('Location: /produtos/lista');
         } catch (Exception $e) {
             $erro = $e->getMessage();
             include "views/cabecalho.php";
             include "views/produtos/form.php";
+            include "views/rodape.php";
         }
     }
 
@@ -71,6 +76,6 @@ class ProdutoController {
                 setFlash('error', $e->getMessage());
             }
         }
-        header('Location: index.php?page=/produtos/lista');
+        header('Location: /produtos/lista');
     }
 }

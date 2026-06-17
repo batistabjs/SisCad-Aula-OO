@@ -1,0 +1,32 @@
+# Composer dependencies
+/vendor/
+
+# Environment configuration and secrets
+.env
+.env.local
+.env.*.local
+
+# Logs and runtime data
+*.log
+/storage/*.log
+/var/log/
+
+# Testing and coverage artifacts
+/.phpunit.result.cache
+/phpunit.xml
+/tests/_output/
+/coverage/
+
+# IDE and Editor configurations
+/.idea/
+/.vscode/
+/.qwen/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db

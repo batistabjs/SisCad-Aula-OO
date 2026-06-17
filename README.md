@@ -29,7 +29,7 @@ O projeto foi refatorado para seguir uma arquitetura em camadas, separando respo
     - Ajuste as credenciais de banco de dados em `config/database.php`.
 3.  **Servidor**:
     - Inicie um servidor PHP na raiz do projeto:
-      `php -S localhost:8000`
+      `php -S localhost:8000 rotas.php`
     - Acesse `http://localhost:8000` no navegador.
 
 ## Recursos Implementados

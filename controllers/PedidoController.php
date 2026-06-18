@@ -54,7 +54,7 @@ class PedidoController {
 
         if (!$clienteId || empty($produtos)) {
             setFlash('danger', 'Cliente e ao menos um produto são obrigatórios.');
-            header('Location: /pedidos/cadastro');
+            header('Location: /pedidos/lista');
             exit;
         }
 
@@ -65,12 +65,12 @@ class PedidoController {
         foreach ($produtos as $index => $produtoId) {
             $qtd = (int)($quantidades[$index] ?? 1);
             $preco = (float)($precos[$index] ?? 0);
-            
+
             $item = new PedidoItem();
             $item->setProdutoId($produtoId);
             $item->setQuantidade($qtd);
             $item->setPrecoUnitario($preco);
-            
+
             $pedido->addItem($item);
             $valorTotal += ($qtd * $preco);
         }
@@ -86,7 +86,27 @@ class PedidoController {
             setFlash('danger', $e->getMessage());
         }
 
-        header('Location: /pedidos/cadastro');
+        header('Location: /pedidos/lista');
+        exit;
+    }
+
+    public function cancel() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            setFlash('danger', 'ID do pedido não fornecido.');
+            header('Location: /pedidos/lista');
+            exit;
+        }
+
+        try {
+            if ($this->pedidoDAO->cancelPedido((int)$id, $this->produtoDAO)) {
+                setFlash('success', 'Pedido cancelado com sucesso e estoque restaurado!');
+            }
+        } catch (Exception $e) {
+            setFlash('danger', $e->getMessage());
+        }
+
+        header('Location: /pedidos/lista');
         exit;
     }
 }

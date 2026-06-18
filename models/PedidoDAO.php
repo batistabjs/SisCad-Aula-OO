@@ -47,18 +47,64 @@ class PedidoDAO {
             $data = $stmt->fetch();
             if (!$data) return null;
 
-            $pedido = new Pedido($data['id'], $data['cliente_id'], $data['data_pedido'], $data['valor_total']);
-            
+            $pedido = new Pedido($data['id'], $data['cliente_id'], $data['data_pedido'], $data['valor_total'], $data['status']);
+
             $stmtItens = $this->pdo->prepare('SELECT * FROM pedidos_itens WHERE pedido_id = ?');
             $stmtItens->execute([$id]);
             while ($itemData = $stmtItens->fetch()) {
                 $item = new PedidoItem($itemData['id'], $itemData['pedido_id'], $itemData['produto_id'], $itemData['quantidade'], $itemData['preco_unitario']);
                 $pedido->addItem($item);
             }
-            
+
             return $pedido;
         } catch (PDOException $e) {
             throw new Exception("Erro ao buscar pedido: " . $e->getMessage());
+        }
+    }
+    public function updateStatus(int $id, string $status): bool {
+        try {
+            $stmt = $this->pdo->prepare('UPDATE pedidos SET status = ? WHERE id = ?');
+            return $stmt->execute([$status, $id]);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao atualizar status do pedido: " . $e->getMessage());
+        }
+    }
+
+    public function cancelPedido(int $id, ProdutoDAO $produtoDAO): bool {
+        try {
+            $this->pdo->beginTransaction();
+
+            $pedido = $this->findById($id);
+            if (!$pedido) {
+                throw new Exception("Pedido não encontrado.");
+            }
+
+            if ($pedido->getStatus() === 'Cancelado') {
+                throw new Exception("O pedido já está cancelado.");
+            }
+
+            if ($pedido->getStatus() === 'Entregue') {
+                throw new Exception("Não é possível cancelar um pedido que já foi entregue.");
+            }
+
+            // Atualizar status do pedido
+            $this->updateStatus($id, 'Cancelado');
+
+            // Devolver produtos ao estoque
+            foreach ($pedido->getItens() as $item) {
+                $produto = $produtoDAO->findById($item->getProdutoId());
+                if ($produto) {
+                    $novoEstoque = $produto->getEstoque() + $item->getQuantidade();
+                    $produto->setEstoque($novoEstoque);
+                    $produtoDAO->save($produto);
+                }
+            }
+
+            $this->pdo->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
         }
     }
 

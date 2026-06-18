@@ -3,7 +3,7 @@ session_start();
 
 // Autoload aprimorado para incluir core, config, models e controllers
 spl_autoload_register(function ($class) {
-    $paths = ['core/', 'config/', 'models/', 'controllers/'];
+    $paths = ['core/', 'config/', 'models/', 'controllers/', 'controllers/api/'];
     foreach ($paths as $path) {
         $file = __DIR__ . '/' . $path . $class . '.php';
         if (file_exists($file)) {
@@ -18,6 +18,14 @@ function setFlash($type, $message) {
     $_SESSION['flash'] = ['type' => $type, 'message' => $message];
 }
 
+// --- Trava de Autenticação ---
+// Definimos quais rotas são públicas
+$publicRoutes = ['/', '/landing', '/login', '/login/autenticar', '/api/pedidos', '/api/pedidos/show'];
+if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
+    header('Location: /login');
+    exit;
+}
+
 // Inicialização do Roteador
 $router = new Router();
 
@@ -26,6 +34,9 @@ $router->get('/', 'LandingPageController@index');
 $router->get('/landing', 'LandingPageController@index');
 $router->get('/login', 'AuthController@login');
 $router->post('/login/autenticar', 'AuthController@authenticate');
+
+// Rota de Logout
+$router->get('/auth/logout', 'AuthController@logout');
 
 // Definição das Rotas - Dashboard
 $router->get('/dashboard', 'DashboardController@index');
@@ -59,26 +70,23 @@ $router->get('/pedidos/lista', 'PedidoController@index');
 $router->get('/pedidos/detalhes', 'PedidoController@details');
 $router->get('/pedidos/cadastro', 'PedidoController@create');
 $router->post('/pedidos/salvar', 'PedidoController@store');
+$router->get('/pedidos/cancel', 'PedidoController@cancel');
+
+// Definição das Rotas - API de Pedidos
+$router->get('/api/pedidos', 'ApiPedidoController@index');
+$router->get('/api/pedidos/show', 'ApiPedidoController@show');
 
 // Captura a página solicitada
 // 1. Tenta pegar do parâmetro 'page' (usado pelo .htaccess do Apache)
 // 2. Se não houver, usa a URI da requisição (para php -S ou outros servidores)
 $uri = $_GET['page'] ?? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Remove 'rotas.php' da URI se estiver presente para evitar erro de rota
-$uri = str_replace('/rotas.php', '', $uri);
+// Remove 'index.php' da URI se estiver presente para evitar erro de rota
+$uri = str_replace('/index.php', '', $uri);
 
 // Define rota padrão se a URI for raiz, vazia ou apenas '/'
 if ($uri === '/' || empty($uri)) {
     $uri = '/landing';
-}
-
-// --- Trava de Autenticação ---
-// Definimos quais rotas são públicas
-$publicRoutes = ['/', '/landing', '/login', '/login/autenticar'];
-if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
-    header('Location: /login');
-    exit;
 }
 
 $method = $_SERVER['REQUEST_METHOD'];

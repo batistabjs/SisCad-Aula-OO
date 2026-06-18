@@ -59,7 +59,7 @@
                 </div>
             </form>
             <div class="text-center mt-4">
-                <a href="/landing" class="text-decoration-none text-muted small">Voltar para a Home</a>
+                <a href="/" class="text-decoration-none text-muted small">Voltar para a Home</a>
             </div>
         </div>
     </div>

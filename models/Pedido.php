@@ -6,13 +6,15 @@ class Pedido {
     private $clienteId;
     private $dataPedido;
     private $valorTotal;
+    private $status;
     private $itens = [];
 
-    public function __construct($id = null, $clienteId = null, $dataPedido = null, $valorTotal = 0.0) {
+    public function __construct($id = null, $clienteId = null, $dataPedido = null, $valorTotal = 0.0, $status = 'Novo') {
         $this->id = $id;
         $this->clienteId = $clienteId;
         $this->dataPedido = $dataPedido;
         $this->valorTotal = $valorTotal;
+        $this->status = $status;
     }
 
     public function getId() { return $this->id; }
@@ -26,6 +28,9 @@ class Pedido {
 
     public function getValorTotal() { return $this->valorTotal; }
     public function setValorTotal($valor) { $this->valorTotal = $valor; }
+
+    public function getStatus() { return $this->status; }
+    public function setStatus($status) { $this->status = $status; }
 
     public function addItem(PedidoItem $item) {
         $this->itens[] = $item;

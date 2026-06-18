@@ -12,8 +12,25 @@
             <div class="card-body">
                 <p class="mb-1"><strong>Data:</strong> <?php echo date('d/m/Y H:i', strtotime($pedido->getDataPedido())); ?></p>
                 <p class="mb-1"><strong>Cliente ID:</strong> <?php echo $pedido->getClienteId(); ?></p>
+                <p class="mb-1"><strong>Status:</strong> 
+                    <?php 
+                        $status = $pedido->getStatus();
+                        $badgeClass = 'bg-info';
+                        if ($status === 'Entregue') $badgeClass = 'bg-success';
+                        elseif ($status === 'Pendente') $badgeClass = 'bg-warning text-dark';
+                        elseif ($status === 'Cancelado') $badgeClass = 'bg-danger';
+                    ?>
+                    <span class="badge <?php echo $badgeClass; ?>"><?php echo $status; ?></span>
+                </p>
                 <hr>
                 <h4 class="text-end">Total: <span class="text-primary">R$ <?php echo number_format($pedido->getValorTotal(), 2, ',', '.'); ?></span></h4>
+                <div class="d-grid gap-2 mt-3">
+                    <?php if ($status !== 'Cancelado' && $status !== 'Entregue'): ?>
+                        <a href="/pedidos/cancel?id=<?php echo $pedido->getId(); ?>" 
+                           class="btn btn-danger" 
+                           onclick="return confirm('Tem certeza que deseja cancelar este pedido? O estoque será restaurado.')">Cancelar Pedido</a>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>

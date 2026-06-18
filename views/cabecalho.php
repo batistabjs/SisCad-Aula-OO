@@ -32,6 +32,7 @@
                         <a class="nav-link" href="/produtos/lista">Produtos</a>
                     </li>
                 </ul>
+                <a href="/auth/logout" class="btn btn-outline-danger ms-lg-3">Sair</a>
             </div>
         </div>
     </nav>

@@ -34,9 +34,16 @@ class ApiPedidoController {
         }
     }
 
-    public function show($id) {
+    public function porId() {
         $this->validateApiKey();
         
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID do pedido não fornecido.']);
+            return;
+        }
+
         try {
             $pedido = $this->pedidoDAO->findById((int)$id);
             if (!$pedido) {

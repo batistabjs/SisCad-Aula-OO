@@ -18,14 +18,6 @@ function setFlash($type, $message) {
     $_SESSION['flash'] = ['type' => $type, 'message' => $message];
 }
 
-// --- Trava de Autenticação ---
-// Definimos quais rotas são públicas
-$publicRoutes = ['/', '/landing', '/login', '/login/autenticar', '/api/pedidos', '/api/pedidos/show'];
-if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
-    header('Location: /login');
-    exit;
-}
-
 // Inicialização do Roteador
 $router = new Router();
 
@@ -74,7 +66,7 @@ $router->get('/pedidos/cancel', 'PedidoController@cancel');
 
 // Definição das Rotas - API de Pedidos
 $router->get('/api/pedidos', 'ApiPedidoController@index');
-$router->get('/api/pedidos/show', 'ApiPedidoController@show');
+$router->get('/api/pedidos/porId', 'ApiPedidoController@porId');
 
 // Captura a página solicitada
 // 1. Tenta pegar do parâmetro 'page' (usado pelo .htaccess do Apache)
@@ -87,6 +79,14 @@ $uri = str_replace('/index.php', '', $uri);
 // Define rota padrão se a URI for raiz, vazia ou apenas '/'
 if ($uri === '/' || empty($uri)) {
     $uri = '/landing';
+}
+
+// --- Trava de Autenticação ---
+// Definimos quais rotas são públicas
+$publicRoutes = ['/', '/landing', '/login', '/login/autenticar', '/api/pedidos', '/api/pedidos/porId'];
+if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
+    header('Location: /login');
+    exit;
 }
 
 $method = $_SERVER['REQUEST_METHOD'];

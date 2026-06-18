@@ -23,13 +23,13 @@ O projeto foi refatorado para seguir uma arquitetura em camadas, separando respo
 ## Como Executar
 
 1.  **Banco de Dados**:
-    - Importe os arquivos em `bd-scripts/` no seu MySQL.
-    - Certifique-se de que o banco de dados se chama `agenda`.
+    - Importe os arquivos em `bd-scripts/` no seu MySQL, de acordo com a ordem dos arquivos.
+    - Certifique-se de que o banco de dados se chama `sis_cad`.
 2.  **Configuração**:
     - Ajuste as credenciais de banco de dados em `config/database.php`.
 3.  **Servidor**:
     - Inicie um servidor PHP na raiz do projeto:
-      `php -S localhost:8000 rotas.php`
+      `php -S localhost:8000 index.php`
     - Acesse `http://localhost:8000` no navegador.
 
 ## Recursos Implementados

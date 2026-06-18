@@ -19,40 +19,35 @@ class ContatoController {
         $totalRegistros = $this->dao->countAll($busca);
         $totalPaginas = ceil($totalRegistros / $porPagina);
 
-        include "views/cabecalho.php";
-        include "views/contatos/lista.php";
-        include "views/rodape.php";
+        require_once "views/contatos/lista.php";
     }
 
     public function create() {
         $id = $_GET['id'] ?? null;
         $contato = $id ? $this->dao->findById((int)$id) : null;
-        
-        include "views/cabecalho.php";
-        include "views/contatos/form.php";
-        include "views/rodape.php";
+
+        require_once "views/contatos/form.php";
     }
 
     public function store() {
         $id = $_POST['id'] ?? null;
         $contato = new Contato($id, $_POST['nome'] ?? '', $_POST['email'] ?? '', $_POST['telefone'] ?? '');
-        
+
         if ($contato->getNome() && $contato->getEmail()) {
             try {
                 $this->dao->save($contato);
                 setFlash('success', 'Contato salvo com sucesso!');
                 header('Location: /contatos/lista');
+                exit;
             } catch (Exception $e) {
                 $erro = $e->getMessage();
-                include "views/cabecalho.php";
-                include "views/contatos/form.php";
-                include "views/rodape.php";
+                require_once "views/contatos/form.php";
+                return;
             }
         } else {
             $erro = "Nome e e-mail são obrigatórios.";
-            include "views/cabecalho.php";
-            include "views/contatos/form.php";
-            include "views/rodape.php";
+            require_once "views/contatos/form.php";
+            return;
         }
     }
 
@@ -67,5 +62,6 @@ class ContatoController {
             }
         }
         header('Location: /contatos/lista');
+        exit;
     }
 }

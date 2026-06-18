@@ -21,9 +21,11 @@ function setFlash($type, $message) {
 // Inicialização do Roteador
 $router = new Router();
 
-// Definição das Rotas - Landing Page
+// Rotas Públicas (Permitidas sem login)
 $router->get('/', 'LandingPageController@index');
 $router->get('/landing', 'LandingPageController@index');
+$router->get('/login', 'AuthController@login');
+$router->post('/login/autenticar', 'AuthController@authenticate');
 
 // Definição das Rotas - Dashboard
 $router->get('/dashboard', 'DashboardController@index');
@@ -46,6 +48,18 @@ $router->get('/produtos/cadastro', 'ProdutoController@create');
 $router->post('/produtos/salvar', 'ProdutoController@store');
 $router->get('/produtos/excluir', 'ProdutoController@delete');
 
+// Definição das Rotas - Módulo de Usuários
+$router->get('/usuarios/lista', 'UsuarioController@index');
+$router->get('/usuarios/cadastro', 'UsuarioController@create');
+$router->post('/usuarios/salvar', 'UsuarioController@store');
+$router->get('/usuarios/excluir', 'UsuarioController@delete');
+
+// Definição das Rotas - Módulo de Pedidos
+$router->get('/pedidos/lista', 'PedidoController@index');
+$router->get('/pedidos/detalhes', 'PedidoController@details');
+$router->get('/pedidos/cadastro', 'PedidoController@create');
+$router->post('/pedidos/salvar', 'PedidoController@store');
+
 // Captura a página solicitada
 // 1. Tenta pegar do parâmetro 'page' (usado pelo .htaccess do Apache)
 // 2. Se não houver, usa a URI da requisição (para php -S ou outros servidores)
@@ -57,6 +71,14 @@ $uri = str_replace('/rotas.php', '', $uri);
 // Define rota padrão se a URI for raiz, vazia ou apenas '/'
 if ($uri === '/' || empty($uri)) {
     $uri = '/landing';
+}
+
+// --- Trava de Autenticação ---
+// Definimos quais rotas são públicas
+$publicRoutes = ['/', '/landing', '/login', '/login/autenticar'];
+if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
+    header('Location: /login');
+    exit;
 }
 
 $method = $_SERVER['REQUEST_METHOD'];

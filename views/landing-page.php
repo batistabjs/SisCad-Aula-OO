@@ -29,7 +29,7 @@
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="#">SisCad</a>
             <div class="ms-auto">
-                <a href="/dashboard" class="btn btn-outline-primary">Acessar Sistema</a>
+                <a href="/login" class="btn btn-outline-primary">Acessar Sistema</a>
             </div>
         </div>
     </nav>
@@ -40,7 +40,7 @@
             <h1 class="display-3 fw-bold">Controle suas Vendas com Eficiência</h1>
             <p class="lead mb-5">A solução completa para gestão de clientes, contatos e produtos em um só lugar. Simples, rápido e intuitivo.</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a href="/dashboard" class="btn btn-light btn-lg px-4 gap-3 fw-bold text-primary">Começar Agora</a>
+                <a href="/login" class="btn btn-light btn-lg px-4 gap-3 fw-bold text-primary">Começar Agora</a>
                 <a href="#recursos" class="btn btn-outline-light btn-lg px-4">Saiba Mais</a>
             </div>
         </div>
@@ -88,11 +88,18 @@
                         <li class="mb-2">✅ Cadastro Simplificado</li>
                         <li class="mb-2">✅ Dashboard de Indicadores</li>
                     </ul>
-                    <a href="/dashboard" class="btn btn-primary mt-3">Experimentar Gratuitamente</a>
+                    <a href="/login" class="btn btn-primary mt-3">Experimentar Gratuitamente</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <main>
-    <?php include "views/rodape.php"; ?>
+    <footer class="bg-light border-top py-4 mt-5">
+        <div class="container text-center text-muted">
+            <p class="mb-0">&copy; 2026 SisCad - Sistema de Controle de Vendas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

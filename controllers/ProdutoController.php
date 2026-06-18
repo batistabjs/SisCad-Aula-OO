@@ -11,29 +11,23 @@ class ProdutoController {
 
     public function index() {
         $produtos = $this->dao->findAll();
-        include "views/cabecalho.php";
-        include "views/produtos/lista.php";
-        include "views/rodape.php";
+        require_once "views/produtos/lista.php";
     }
 
     public function create() {
         $id = $_GET['id'] ?? null;
         $produto = $id ? $this->dao->findById((int)$id) : null;
-        include "views/cabecalho.php";
-        include "views/produtos/form.php";
-        include "views/rodape.php";
+        require_once "views/produtos/form.php";
     }
 
     public function store() {
         $id = $_POST['id'] ?? null;
         $preco = filter_input(INPUT_POST, 'preco', FILTER_VALIDATE_FLOAT);
         $estoque = filter_input(INPUT_POST, 'estoque', FILTER_VALIDATE_INT);
-        
+
         if (!$preco || $preco <= 0 || $estoque === false || $estoque < 0) {
             $erro = "Preço e estoque inválidos.";
-            include "views/cabecalho.php";
-            include "views/produtos/form.php";
-            include "views/rodape.php";
+            require_once "views/produtos/form.php";
             return;
         }
 
@@ -45,24 +39,22 @@ class ProdutoController {
                 move_uploaded_file($_FILES['imagem']['tmp_name'], 'uploads/' . $nomeArquivo);
             } else {
                 $erro = "Extensão de imagem não permitida.";
-                include "views/cabecalho.php";
-                include "views/produtos/form.php";
-                include "views/rodape.php";
+                require_once "views/produtos/form.php";
                 return;
             }
         }
 
         $produto = new Produto($id, $_POST['nome'] ?? '', $_POST['descricao'] ?? '', $preco, $estoque, $nomeArquivo ?? ($_POST['old_image'] ?? null));
-        
+
         try {
             $this->dao->save($produto);
             setFlash('success', 'Produto salvo com sucesso!');
             header('Location: /produtos/lista');
+            exit;
         } catch (Exception $e) {
             $erro = $e->getMessage();
-            include "views/cabecalho.php";
-            include "views/produtos/form.php";
-            include "views/rodape.php";
+            require_once "views/produtos/form.php";
+            return;
         }
     }
 
@@ -77,5 +69,6 @@ class ProdutoController {
             }
         }
         header('Location: /produtos/lista');
+        exit;
     }
 }

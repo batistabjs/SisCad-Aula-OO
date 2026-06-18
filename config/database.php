@@ -9,7 +9,7 @@ class Database {
         // Importa as definições de constantes do arquivo original para manter compatibilidade
         // Ou define aqui mesmo para centralizar.
         $host = 'localhost';
-        $db   = 'agenda';
+        $db   = 'sis_cad';
         $user = 'root';
         $pass = '';
 

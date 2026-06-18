@@ -3,7 +3,7 @@ session_start();
 
 // Autoload aprimorado para incluir core, config, models e controllers
 spl_autoload_register(function ($class) {
-    $paths = ['core/', 'config/', 'models/', 'controllers/', 'controllers/api/'];
+    $paths = ['core/', 'config/', 'models/', 'controllers/', 'controllers/api/', 'controllers/api/integracao/'];
     foreach ($paths as $path) {
         $file = __DIR__ . '/' . $path . $class . '.php';
         if (file_exists($file)) {
@@ -68,6 +68,9 @@ $router->get('/pedidos/cancel', 'PedidoController@cancel');
 $router->get('/api/pedidos', 'ApiPedidoController@index');
 $router->get('/api/pedidos/porId', 'ApiPedidoController@porId');
 
+// Definição das Rotas - Integrações Externas
+$router->get('/api/integracao/dolar', 'ApiDolarApiController@index');
+
 // Captura a página solicitada
 // 1. Tenta pegar do parâmetro 'page' (usado pelo .htaccess do Apache)
 // 2. Se não houver, usa a URI da requisição (para php -S ou outros servidores)
@@ -83,7 +86,7 @@ if ($uri === '/' || empty($uri)) {
 
 // --- Trava de Autenticação ---
 // Definimos quais rotas são públicas
-$publicRoutes = ['/', '/landing', '/login', '/login/autenticar', '/api/pedidos', '/api/pedidos/porId'];
+$publicRoutes = ['/', '/landing', '/login', '/login/autenticar', '/api/pedidos', '/api/pedidos/porId', '/api/integracao/dolar'];
 if (!isset($_SESSION['user_id']) && !in_array($uri, $publicRoutes)) {
     header('Location: /login');
     exit;

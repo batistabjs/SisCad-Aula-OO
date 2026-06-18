@@ -41,4 +41,40 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-dark text-white mb-3 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Cotação do Dólar</h5>
+                    <p id="dolar-cotacao" class="card-text display-6 fw-bold">Carregando...</p>
+                    <small class="text-muted">Fonte: dolarapi.com</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dolarElement = document.getElementById('dolar-cotacao');
+        if (dolarElement) {
+            fetch('/api/integracao/dolar')
+                .then(response => {
+                    if (!response.ok) throw new Error('Erro na requisição');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.valor) {
+                        dolarElement.innerText = `🇺🇸 R$ ${data.valor}`;
+                    } else {
+                        dolarElement.innerText = 'Indisponível';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar cotação:', error);
+                    dolarElement.innerText = 'Erro ao carregar';
+                });
+        }
+    });
+</script>

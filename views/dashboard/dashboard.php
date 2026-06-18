@@ -48,7 +48,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title">Cotação do Dólar</h5>
                     <p id="dolar-cotacao" class="card-text display-6 fw-bold">Carregando...</p>
-                    <small class="text-muted">Fonte: dolarapi.com</small>
+                    <small class="text-white">Fonte: dolarapi.com</small>
                 </div>
             </div>
         </div>
@@ -64,9 +64,12 @@
                     if (!response.ok) throw new Error('Erro na requisição');
                     return response.json();
                 })
-                .then(data => {
+                .then(data => { 
                     if (data && data.valor) {
-                        dolarElement.innerText = `🇺🇸 R$ ${data.valor}`;
+                        dolarElement.innerText = data.valor.toLocaleString('pt-BR', { 
+                                                                                style: 'currency', 
+                                                                                currency: 'BRL' 
+                                                                            });
                     } else {
                         dolarElement.innerText = 'Indisponível';
                     }
